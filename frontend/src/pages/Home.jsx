@@ -2,15 +2,34 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ShieldCheck, Truck, RotateCcw, Gem, Star, ArrowRight, Mail, Sparkles } from "lucide-react";
-import { fetchProducts, fetchReviews, subscribeNewsletter, formatINR } from "../lib/api";
+import { fetchProducts, fetchReviews, subscribeNewsletter } from "../lib/api";
 import ProductCard from "../components/ProductCard";
 import { toast } from "sonner";
 
+const CAT_IMG = {
+  bridal: "https://images.unsplash.com/photo-1756483560049-e7b2208f99a0?crop=entropy&cs=srgb&fm=jpg&w=900&q=85",
+  mehndi: "https://images.unsplash.com/photo-1532039956299-1614b86a6d2f?crop=entropy&cs=srgb&fm=jpg&w=900&q=85",
+  haldi: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?crop=entropy&cs=srgb&fm=jpg&w=900&q=85",
+  assamese: "https://images.pexels.com/photos/15650527/pexels-photo-15650527.jpeg?auto=compress&cs=tinysrgb&w=900",
+  ethnic: "https://images.pexels.com/photos/19647000/pexels-photo-19647000.jpeg?auto=compress&cs=tinysrgb&w=900",
+  earrings: "https://images.pexels.com/photos/20074769/pexels-photo-20074769.jpeg?auto=compress&cs=tinysrgb&w=900",
+  necklaces: "https://images.pexels.com/photos/35921022/pexels-photo-35921022.jpeg?auto=compress&cs=tinysrgb&w=900",
+  oxidised: "https://images.unsplash.com/photo-1626784214765-754de4c5a77b?crop=entropy&cs=srgb&fm=jpg&w=900&q=85",
+  polki: "https://images.unsplash.com/photo-1570212773364-e30cd076539e?crop=entropy&cs=srgb&fm=jpg&w=900&q=85",
+  temple: "https://images.pexels.com/photos/17557255/pexels-photo-17557255.jpeg?auto=compress&cs=tinysrgb&w=900",
+};
+
 const CATEGORIES = [
-  { key: "bridal", title: "Bridal Sets", img: "https://images.unsplash.com/photo-1756483560049-e7b2208f99a0?crop=entropy&cs=srgb&fm=jpg&w=900&q=85", span: "md:col-span-2 md:row-span-2 aspect-[4/5] md:aspect-auto" },
-  { key: "earrings", title: "Earrings", img: "https://images.pexels.com/photos/20074769/pexels-photo-20074769.jpeg?auto=compress&cs=tinysrgb&w=900", span: "aspect-square" },
-  { key: "necklaces", title: "Necklaces", img: "https://images.pexels.com/photos/19647000/pexels-photo-19647000.jpeg?auto=compress&cs=tinysrgb&w=900", span: "aspect-square" },
-  { key: "oxidised", title: "Oxidised", img: "https://images.pexels.com/photos/15650527/pexels-photo-15650527.jpeg?auto=compress&cs=tinysrgb&w=900", span: "md:col-span-2 aspect-[2/1]" },
+  { key: "bridal", title: "Bridal Sets", subtitle: "Made for your big day" },
+  { key: "mehndi", title: "Mehndi Jewellery", subtitle: "Floral & festive" },
+  { key: "haldi", title: "Haldi Jewellery", subtitle: "Sunshine vibes" },
+  { key: "assamese", title: "Assamese Jewellery", subtitle: "Bihu heritage" },
+  { key: "ethnic", title: "Indian Ethnic", subtitle: "Regional classics" },
+  { key: "earrings", title: "Earrings", subtitle: "From studs to jhumkas" },
+  { key: "necklaces", title: "Necklaces", subtitle: "Choker to rani haar" },
+  { key: "oxidised", title: "Oxidised", subtitle: "Boho silver" },
+  { key: "polki", title: "Polki & Kundan", subtitle: "Heritage stones" },
+  { key: "temple", title: "Temple Jewellery", subtitle: "Divine motifs" },
 ];
 
 const INSTAGRAM = [
@@ -22,6 +41,10 @@ const INSTAGRAM = [
   "https://images.unsplash.com/photo-1626784214765-754de4c5a77b?crop=entropy&cs=srgb&fm=jpg&w=900&q=85",
   "https://images.pexels.com/photos/20074769/pexels-photo-20074769.jpeg?auto=compress&cs=tinysrgb&w=900",
   "https://images.pexels.com/photos/35921022/pexels-photo-35921022.jpeg?auto=compress&cs=tinysrgb&w=900",
+  "https://images.unsplash.com/photo-1756483560049-e7b2208f99a0?crop=entropy&cs=srgb&fm=jpg&w=900&q=85",
+  "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?crop=entropy&cs=srgb&fm=jpg&w=900&q=85",
+  "https://images.unsplash.com/photo-1570212773364-e30cd076539e?crop=entropy&cs=srgb&fm=jpg&w=900&q=85",
+  "https://images.pexels.com/photos/15650527/pexels-photo-15650527.jpeg?auto=compress&cs=tinysrgb&w=900",
 ];
 
 export default function Home() {
@@ -43,7 +66,7 @@ export default function Home() {
       const res = await subscribeNewsletter(email);
       toast.success(res.message, { description: `Coupon: ${res.coupon}` });
       setEmail("");
-    } catch (err) {
+    } catch {
       toast.error("Could not subscribe. Try again.");
     }
   };
@@ -62,7 +85,7 @@ export default function Home() {
                 <span className="shimmer-gold">gold.</span>
               </h1>
               <p className="mt-6 text-base md:text-lg text-[#57534E] max-w-md font-light leading-relaxed">
-                Affordable luxury jewellery, handcrafted for every occasion. Discover heirloom-inspired pieces by Aavya.
+                Affordable luxury jewellery, handcrafted for every Indian occasion. Mehndi, Haldi, Bridal & beyond — discover Aavya.
               </p>
               <div className="mt-10 flex flex-wrap gap-4">
                 <Link to="/shop" className="btn-primary inline-flex items-center gap-2" data-testid="hero-shop-now">
@@ -78,11 +101,7 @@ export default function Home() {
           </div>
 
           <div className="relative order-1 md:order-2 h-[60vh] md:h-auto">
-            <img
-              src="https://images.unsplash.com/photo-1756483560049-e7b2208f99a0?crop=entropy&cs=srgb&fm=jpg&w=1400&q=85"
-              alt="Model wearing Aavya bridal jewellery"
-              className="w-full h-full object-cover"
-            />
+            <img src={CAT_IMG.bridal} alt="Model wearing Aavya bridal jewellery" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[#FAFAF9]/30" />
             <div className="absolute bottom-8 left-8 hidden md:block bg-white/95 backdrop-blur-md px-6 py-4 max-w-xs">
               <p className="overline mb-1">Featured</p>
@@ -106,27 +125,33 @@ export default function Home() {
         </div>
       </div>
 
-      {/* CATEGORIES BENTO */}
+      {/* CATEGORIES — 10 cards */}
       <section className="px-4 md:px-12 py-20 md:py-28" data-testid="categories-section">
         <div className="text-center mb-14">
-          <p className="overline">Curated Collections</p>
+          <p className="overline">Shop By Occasion</p>
           <h2 className="font-serif text-3xl md:text-5xl text-[#1C1917] mt-3 font-light">Find Your Aavya Moment</h2>
+          <p className="text-sm text-[#57534E] mt-3">From Mehndi to Bridal — Indian ethnic jewellery for every celebration</p>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5 max-w-7xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-5 max-w-7xl mx-auto" data-testid="categories-grid">
           {CATEGORIES.map((cat) => (
-            <Link key={cat.key} to={`/shop?category=${cat.key}`} className={`relative group overflow-hidden bg-[#FAFAF9] ${cat.span} col-span-1`} data-testid={`category-${cat.key}`}>
-              <img src={cat.img} alt={cat.title} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/0 to-transparent" />
-              <div className="absolute bottom-5 left-5 right-5 text-white">
-                <p className="overline text-white/70">Shop</p>
-                <h3 className="font-serif text-2xl md:text-3xl mt-1">{cat.title}</h3>
+            <Link
+              key={cat.key}
+              to={`/shop?category=${cat.key}`}
+              className="relative group overflow-hidden bg-[#FAFAF9] aspect-[4/5]"
+              data-testid={`category-${cat.key}`}
+            >
+              <img src={CAT_IMG[cat.key]} alt={cat.title} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+              <div className="absolute bottom-4 left-4 right-4 text-white">
+                <p className="text-[9px] uppercase tracking-[0.25em] text-white/70">{cat.subtitle}</p>
+                <h3 className="font-serif text-lg md:text-xl mt-1 leading-tight">{cat.title}</h3>
               </div>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* TRENDING PRODUCTS */}
+      {/* TRENDING — 10 products */}
       <section className="px-4 md:px-12 py-12" data-testid="trending-section">
         <div className="flex items-end justify-between mb-10">
           <div>
@@ -135,8 +160,8 @@ export default function Home() {
           </div>
           <Link to="/shop" className="hidden md:flex items-center gap-2 text-xs uppercase tracking-[0.25em] hover:text-[#D4AF37]">View All <ArrowRight size={14} /></Link>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
-          {trending.slice(0, 4).map((p) => <ProductCard key={p.id} product={p} testIdPrefix="trending" />)}
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
+          {trending.slice(0, 10).map((p) => <ProductCard key={p.id} product={p} testIdPrefix="trending" />)}
         </div>
       </section>
 
@@ -152,22 +177,23 @@ export default function Home() {
             <Link to="/shop?category=bridal" className="btn-primary mt-8 inline-block" data-testid="weekend-shop-bridal">Shop Bridal Collection</Link>
           </div>
           <div className="hidden md:block relative">
-            <img src="https://images.unsplash.com/photo-1570212773364-e30cd076539e?crop=entropy&cs=srgb&fm=jpg&w=900&q=85" alt="Bridal" className="w-full h-[400px] object-cover" />
+            <img src={CAT_IMG.polki} alt="Bridal" className="w-full h-[400px] object-cover" />
           </div>
         </div>
         <Gem className="absolute -top-10 -right-10 text-[#D4AF37]/10" size={300} strokeWidth={0.5} />
       </section>
 
-      {/* BEST SELLERS */}
+      {/* BEST SELLERS — 10 products */}
       <section className="px-4 md:px-12 py-12" data-testid="best-sellers-section">
         <div className="flex items-end justify-between mb-10">
           <div>
             <p className="overline">Loved by Many</p>
             <h2 className="font-serif text-3xl md:text-5xl text-[#1C1917] mt-3 font-light">Best Sellers</h2>
           </div>
+          <Link to="/shop" className="hidden md:flex items-center gap-2 text-xs uppercase tracking-[0.25em] hover:text-[#D4AF37]">Browse All <ArrowRight size={14} /></Link>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
-          {best.slice(0, 4).map((p) => <ProductCard key={p.id} product={p} testIdPrefix="best" />)}
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
+          {best.slice(0, 10).map((p) => <ProductCard key={p.id} product={p} testIdPrefix="best" />)}
         </div>
       </section>
 
@@ -193,39 +219,39 @@ export default function Home() {
         </div>
       </section>
 
-      {/* REVIEWS */}
+      {/* REVIEWS — 6 */}
       <section className="px-4 md:px-12 py-24" data-testid="reviews-section">
         <div className="text-center mb-14">
           <p className="overline">Real Stories</p>
           <h2 className="font-serif text-3xl md:text-5xl text-[#1C1917] mt-3 font-light">Aavya, Loved by You</h2>
         </div>
-        <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-          {reviews.slice(0, 4).map((r) => (
-            <div key={r.id} className="bg-[#FAFAF9] p-8 md:p-10 flex gap-5" data-testid={`review-${r.id}`}>
-              <img src={r.image} alt={r.name} className="w-16 h-16 object-cover rounded-full flex-shrink-0" />
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+          {reviews.slice(0, 6).map((r) => (
+            <div key={r.id} className="bg-[#FAFAF9] p-7 flex gap-4" data-testid={`review-${r.id}`}>
+              <img src={r.image} alt={r.name} className="w-14 h-14 object-cover rounded-full flex-shrink-0" />
               <div>
-                <div className="flex gap-0.5 mb-3">
-                  {Array(r.rating).fill(0).map((_, i) => <Star key={i} size={14} className="fill-[#D4AF37] text-[#D4AF37]" />)}
+                <div className="flex gap-0.5 mb-2">
+                  {Array(r.rating).fill(0).map((_, i) => <Star key={i} size={12} className="fill-[#D4AF37] text-[#D4AF37]" />)}
                 </div>
-                <p className="text-[#1C1917] font-serif italic text-base leading-relaxed">"{r.comment}"</p>
-                <p className="mt-3 text-sm text-[#57534E]"><span className="font-medium text-[#1C1917]">{r.name}</span> · {r.location}</p>
+                <p className="text-[#1C1917] font-serif italic text-sm leading-relaxed">"{r.comment}"</p>
+                <p className="mt-2 text-xs text-[#57534E]"><span className="font-medium text-[#1C1917]">{r.name}</span> · {r.location}</p>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* INSTAGRAM */}
+      {/* INSTAGRAM — 12 images */}
       <section className="py-16" data-testid="instagram-section">
         <div className="text-center mb-10 px-4">
           <p className="overline">@aavya.fashion</p>
           <h2 className="font-serif text-3xl md:text-5xl text-[#1C1917] mt-3 font-light">Styled By You</h2>
           <p className="text-[#57534E] mt-3 text-sm">Tag <span className="text-[#D4AF37]">#AavyaFashion</span> for a chance to be featured</p>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
+        <div className="grid grid-cols-3 md:grid-cols-6 gap-1">
           {INSTAGRAM.map((img, ix) => (
             <a key={ix} href="https://instagram.com" target="_blank" rel="noreferrer" className="block aspect-square overflow-hidden group" data-testid={`instagram-${ix}`}>
-              <img src={img} alt="Instagram post" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              <img src={img} alt="Instagram post" loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
             </a>
           ))}
         </div>

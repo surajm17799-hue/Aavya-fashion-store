@@ -6,7 +6,6 @@ import { Toaster } from "sonner";
 import { ShopProvider } from "@/context/ShopContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import CartDrawer from "@/components/CartDrawer";
 
 import Home from "@/pages/Home";
@@ -39,7 +38,6 @@ function App() {
             </Routes>
           </main>
           <Footer />
-          <WhatsAppButton />
           <CartDrawer />
           <Toaster position="top-center" richColors closeButton />
         </ShopProvider>

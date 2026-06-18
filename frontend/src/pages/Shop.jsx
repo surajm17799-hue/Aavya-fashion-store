@@ -5,10 +5,16 @@ import ProductCard from "../components/ProductCard";
 
 const CATS = [
   { key: "all", label: "All Jewellery" },
+  { key: "bridal", label: "Bridal Sets" },
+  { key: "mehndi", label: "Mehndi" },
+  { key: "haldi", label: "Haldi" },
+  { key: "assamese", label: "Assamese" },
+  { key: "ethnic", label: "Indian Ethnic" },
   { key: "earrings", label: "Earrings" },
   { key: "necklaces", label: "Necklaces" },
-  { key: "bridal", label: "Bridal Sets" },
   { key: "oxidised", label: "Oxidised" },
+  { key: "polki", label: "Polki & Kundan" },
+  { key: "temple", label: "Temple" },
 ];
 
 export default function Shop() {
