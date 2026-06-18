@@ -1,0 +1,86 @@
+{
+  "summary": "Comprehensive backend (25 pytest tests) + frontend E2E testing of Aavya Fashion & Jewellery. 25/25 backend tests passed. Frontend mostly working (homepage, hero, WhatsApp button, newsletter, category filters, cart drawer, wishlist, PDP, cart coupon, Stripe redirect, order tracking, policy pages, mobile menu, sticky bar). One CRITICAL bug found: COD checkout fails when email field is left empty due to Pydantic EmailStr validation, and the resulting validation error (an array of objects) is rendered directly via toast.error -> React crash.",
+  "backend_issues": {
+    "critical": [
+      {
+        "endpoint": "POST /api/checkout",
+        "issue": "Address.email is Optional[EmailStr] but rejects empty string '' that frontend sends for unfilled optional email field. Returns 422 with detail as array of pydantic error objects. Should accept empty string and coerce to None, OR backend should sanitize.",
+        "priority": "HIGH"
+      }
+    ],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "Checkout.jsx (onPlaceOrder catch block, line ~76)",
+        "issue": "toast.error(err.response?.data?.detail || 'Could not place order') — when backend returns 422, detail is an ARRAY OF OBJECTS, not a string. React throws: 'Objects are not valid as a React child (found: object with keys {type, loc, msg, input, ctx})'. Must extract first error msg or join.",
+        "selector": "[data-testid=\"place-order-button\"]",
+        "priority": "CRITICAL"
+      },
+      {
+        "component": "Checkout.jsx form submission",
+        "issue": "When user leaves optional email blank, an empty string is sent. Convert empty email to null (or omit field) before POST /api/checkout to avoid backend EmailStr validation failure.",
+        "selector": "[data-testid=\"input-email\"]",
+        "priority": "HIGH"
+      },
+      {
+        "component": "Cart page coupon AAVYA10 on single ₹899 item",
+        "issue": "Total after coupon = ₹908. Math: 899 - 89.90 (10% AAVYA10) + 99 (shipping under ₹999) = 908.10 — works correctly but discount line uses applyCoupon which applies on subtotal BEFORE shipping; that's fine. Just noting for clarity.",
+        "selector": "[data-testid=\"summary-total\"]",
+        "priority": "LOW"
+      },
+      {
+        "component": "ProductDetail accordion",
+        "issue": "After clicking [data-testid=\"accordion-details\"], the accordion content [data-testid=\"accordion-content-details\"] did not become visible in test. May be an animation/visibility issue or the test polled too quickly — needs manual verification.",
+        "selector": "[data-testid=\"accordion-details\"]",
+        "priority": "LOW"
+      },
+      {
+        "component": "Header wishlist count badge",
+        "issue": "Missing data-testid on wishlist count badge (only the wishlist-button has testid). Add data-testid=\"wishlist-count\" for test parity with cart-count.",
+        "selector": "Header.jsx line ~54",
+        "priority": "LOW"
+      }
+    ],
+    "integration_issues": [
+      {
+        "flow": "COD Checkout end-to-end",
+        "issue": "Filling all required fields and clicking 'Place Order (COD)' without email -> backend 422 -> React crash, never navigates to /order/success. Order IS created in DB (status confirmed via direct curl), but UI never recovers. With email filled, flow works (direct curl + backend test passed).",
+        "affected_selectors": ["[data-testid=\"place-order-button\"]", "[data-testid=\"input-email\"]"]
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "Fix Checkout.jsx onPlaceOrder catch: when err.response.data.detail is an array, extract first .msg (e.g., `Array.isArray(detail) ? detail[0]?.msg : detail`).",
+    "Fix Checkout.jsx payload: convert form.email empty string to null/undefined before sending. e.g. `address: { ...form, email: form.email || undefined }`.",
+    "Optional: server-side, make Address.email accept empty string by using a validator that coerces '' to None.",
+    "Add data-testid=\"wishlist-count\" to wishlist badge in Header.jsx.",
+    "Verify accordion expand/collapse interaction works in manual QA."
+  ],
+  "critical_code_review_comments": [
+    "Checkout.jsx error toast renders raw FastAPI detail array as React child — this is the most user-impacting bug. Same pattern appears at line 44 (onApplyCoupon) and should be hardened too.",
+    "Cart.jsx and Checkout.jsx duplicate the order calc (subtotal, shipping ≥999 rule, discount) — backend already has _calc_order; consider exposing GET /api/cart/preview to keep totals authoritative.",
+    "STRIPE_API_KEY default empty string fallback is fine but consider failing fast at startup if missing in production.",
+    "server.py @app.on_event('startup'/'shutdown') is deprecated in FastAPI 0.93+; migrate to lifespan context manager."
+  ],
+  "updated_files": [
+    "/app/backend/tests/backend_test.py (new)",
+    "/app/backend/tests/__init__.py (new)"
+  ],
+  "success_rate": {
+    "backend": "100% (25/25 pytest)",
+    "frontend": "~85% (1 critical COD bug; all other flows working)"
+  },
+  "test_credentials": "N/A — no auth in this app",
+  "seed_data_creation": "Test order AAV26061854C9 created via curl for tracking; multiple TEST_ prefixed addresses left in db.orders (low priority cleanup).",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Backend regression suite at /app/backend/tests/backend_test.py (25 tests, all pass). Key correct testids: cart-button, cart-count, wishlist-button, cart-drawer, drawer-subtotal, close-cart-drawer, shop-card-{slug}, add-to-cart-{slug}, wishlist-toggle-{slug}, detail-add-to-cart, detail-buy-now, thumb-{ix}, accordion-{key}, accordion-content-{key}, cod-badge, coupon-input/apply, summary-subtotal/total, input-full-name/phone/email/line1/line2/city/state/pincode, payment-cod, payment-stripe, place-order-button, order-number, order-details, order-timeline, order-item-{ix}, track-input, track-submit, mobile-menu-button, mobile-menu, sticky-mobile-bar, whatsapp-floating-button, newsletter-email/submit, hero-shop-now. COD flow requires email filled OR backend/frontend fix.",
+  "rca_of_the_issue": "Root cause for COD failure: 1) FastAPI Address.email = Optional[EmailStr] strictly validates; empty string '' is invalid EmailStr (only None is acceptable). 2) Frontend Checkout.jsx state initializes email='' and forwards it as-is in POST payload. 3) Server returns HTTP 422 with detail=[{type, loc, msg, input, ctx}]. 4) Frontend catch block passes detail (array of objects) directly to toast.error, which forwards object children to React render, throwing 'Objects are not valid as a React child'. Reproduction: navigate to /checkout with ≥1 cart item, fill all fields EXCEPT email, select COD, click Place Order — observe console error and no navigation. Mitigation: (a) extract msg from array in catch block, (b) send `email: form.email || undefined` from frontend, (c) optionally accept '' on backend."
+}
