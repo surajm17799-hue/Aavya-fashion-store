@@ -41,7 +41,9 @@ export default function Checkout() {
       setCoupon(c);
       toast.success(`${c.code} applied — saved ₹${formatINR(c.discount)}`);
     } catch (err) {
-      toast.error(err.response?.data?.detail || "Invalid coupon");
+      const d = err.response?.data?.detail;
+      const msg = Array.isArray(d) ? (d[0]?.msg || "Invalid coupon") : (typeof d === "string" ? d : "Invalid coupon");
+      toast.error(msg);
     }
   };
 
@@ -56,9 +58,10 @@ export default function Checkout() {
 
     setSubmitting(true);
     try {
+      const cleanAddress = { ...form, email: form.email?.trim() || undefined };
       const payload = {
         items: cart.map((i) => ({ product_id: i.product_id, name: i.name, image: i.image, price: i.price, quantity: i.quantity })),
-        address: form,
+        address: cleanAddress,
         coupon_code: coupon?.code || null,
         payment_method: paymentMethod,
         origin_url: window.location.origin,
@@ -68,12 +71,13 @@ export default function Checkout() {
         clearCart();
         navigate(`/order/success?cod=1&order_number=${res.order_number}`);
       } else if (res.checkout_url) {
-        // Don't clear cart yet — will clear on success page
         sessionStorage.setItem("aavya_pending_order", res.order_number);
         window.location.href = res.checkout_url;
       }
     } catch (err) {
-      toast.error(err.response?.data?.detail || "Could not place order");
+      const d = err.response?.data?.detail;
+      const msg = Array.isArray(d) ? (d[0]?.msg || "Validation error") : (typeof d === "string" ? d : "Could not place order");
+      toast.error(msg);
       setSubmitting(false);
     }
   };

@@ -51,7 +51,7 @@ export default function Header() {
             <button onClick={() => navigate("/wishlist")} aria-label="Wishlist" data-testid="wishlist-button" className="hover:text-[#D4AF37] transition-colors relative">
               <Heart strokeWidth={1.5} size={20} />
               {wishlist.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-[#D4AF37] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">{wishlist.length}</span>
+                <span className="absolute -top-2 -right-2 bg-[#D4AF37] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center" data-testid="wishlist-count">{wishlist.length}</span>
               )}
             </button>
             <button onClick={() => setDrawerOpen(true)} aria-label="Cart" data-testid="cart-button" className="hover:text-[#D4AF37] transition-colors relative">

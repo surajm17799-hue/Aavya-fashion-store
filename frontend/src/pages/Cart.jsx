@@ -18,7 +18,9 @@ export default function Cart() {
       setCoupon(c);
       toast.success(`Coupon ${c.code} applied!`, { description: `You saved ₹${formatINR(c.discount)}` });
     } catch (err) {
-      toast.error(err.response?.data?.detail || "Invalid coupon");
+      const d = err.response?.data?.detail;
+      const msg = Array.isArray(d) ? (d[0]?.msg || "Invalid coupon") : (typeof d === "string" ? d : "Invalid coupon");
+      toast.error(msg);
     }
   };
 
