@@ -1,0 +1,133 @@
+{
+  "project_name": "Aavya Fashion and Jewellery",
+  "app_type": "e-commerce",
+  "theme": "light",
+  "archetype": "Soft Luxury & Organic Elegance (Archetype 5 / Light Variant)",
+  "design_philosophy": "Museum-like presentation. The product is fine art. Generous white space, soft feminine tones (blush, beige), high-contrast slender serif typography, and gold highlights for a premium editorial Instagram-inspired aesthetic.",
+  "colors": {
+    "background": {
+      "primary": "#FFFFFF",
+      "secondary": "#FAFAF9",
+      "blush_accent": "#FDF2F8",
+      "beige_accent": "#F5F5F0"
+    },
+    "text": {
+      "primary": "#1C1917",
+      "secondary": "#57534E",
+      "muted": "#A8A29E"
+    },
+    "brand": {
+      "gold_primary": "#D4AF37",
+      "gold_light": "#E5C87A",
+      "gold_dark": "#997A15"
+    },
+    "status": {
+      "sale_badge": "#991B1B",
+      "success": "#166534"
+    }
+  },
+  "typography": {
+    "font_families": {
+      "heading": "Playfair Display, serif",
+      "body": "Outfit, sans-serif",
+      "logo": "Italianno, cursive"
+    },
+    "rules": {
+      "h1": "text-5xl md:text-6xl+ font-light tracking-tight text-[#1C1917]",
+      "h2": "text-3xl md:text-4xl font-normal tracking-tight text-[#1C1917]",
+      "h3": "text-2xl font-light text-[#1C1917]",
+      "body": "text-base font-light text-[#57534E] leading-relaxed tracking-wide",
+      "overline": "text-xs font-medium uppercase tracking-[0.2em] text-[#D4AF37]",
+      "product_title": "text-lg md:text-xl font-serif font-medium text-[#1C1917]",
+      "price": "text-base font-sans font-medium text-[#1C1917]"
+    }
+  },
+  "spacing_and_layout": {
+    "container_padding": "px-4 md:px-8 lg:px-12",
+    "section_spacing": "py-20 md:py-32",
+    "grid_patterns": {
+      "categories": "grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-8 (Bento style: vary heights, span 2 for bridal/hero category)",
+      "products": "grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6",
+      "instagram": "grid grid-cols-2 md:grid-cols-4 gap-2"
+    }
+  },
+  "surfaces_and_components": {
+    "header": "Glassmorphism: bg-white/80 backdrop-blur-xl border-b border-stone-200/50, sticky top-0 z-50.",
+    "buttons": {
+      "primary": "bg-[#1C1917] text-white hover:bg-[#D4AF37] transition-colors duration-300 rounded-none px-8 py-4 font-sans uppercase tracking-widest text-sm",
+      "secondary": "bg-transparent border border-[#1C1917] text-[#1C1917] hover:bg-[#FDF2F8] transition-colors duration-300 rounded-none px-8 py-4 font-sans uppercase tracking-widest text-sm",
+      "whatsapp": "fixed bottom-6 right-6 bg-[#25D366] text-white p-4 rounded-full shadow-lg hover:scale-105 transition-transform z-50"
+    },
+    "cards": {
+      "product": "group relative border-none bg-transparent. Image wrapper overflow-hidden bg-[#FAFAF9]. Hover triggers image scale. No heavy drop shadows, use pure minimalist borders if needed.",
+      "badges": "absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-[#1C1917] px-3 py-1 text-xs uppercase tracking-wider"
+    },
+    "animations": "Subtle, luxurious. Use Framer Motion for fade-in-up on scroll. Image scales up 105% on hover smoothly.",
+    "icons": "Use 'lucide-react' for clean minimalist icons. Stroke width 1.5."
+  },
+  "pages_and_sections": [
+    {
+      "name": "Header",
+      "details": "Logo centered: 'Aavya' in Italianno/cursive font with a subtle lucide Lotus icon above it in gold. Nav links left (Shop, Categories, Collections), Icons right (Search, Wishlist, Cart Drawer)."
+    },
+    {
+      "name": "Hero Section",
+      "details": "80vh full bleed or split screen. Left side: delicate typography, 'Elegance Redefined', Shop Now CTA. Right/Background: Bridal jewelry model image. Subtle gold gradient overlay."
+    },
+    {
+      "name": "Featured Categories",
+      "details": "Bento Grid layout (Tetris style). Earrings, Necklaces, Bridal Sets, Oxidised. Overlays on images: bg-black/20 with white serif text."
+    },
+    {
+      "name": "Best Sellers / Trending",
+      "details": "Carousel or grid of product cards. Discount badge, wishlist heart icon on top right. Add to cart button appears on hover over image."
+    },
+    {
+      "name": "Weekend Sale Banner",
+      "details": "Full width soft blush pink background (#FDF2F8). Gold accent text. 'Weekend Exclusive: Flat 10% Off on Bridal Sets'. Code: AAVYA10."
+    },
+    {
+      "name": "Why Choose Us",
+      "details": "4 column minimalist icon row. Icons: ShieldCheck (Authentic), Truck (Free Shipping), RefreshCw (Easy Returns), Gem (Premium Quality)."
+    },
+    {
+      "name": "Instagram Social Proof",
+      "details": "Title: 'Styled By You #AavyaFashion'. Edge-to-edge grid of lifestyle model images wearing jewelry. No gaps or 2px gaps."
+    },
+    {
+      "name": "Footer & Newsletter",
+      "details": "Soft Beige background (#F5F5F0). Newsletter input: transparent background, bottom border only. Elegant links layout."
+    },
+    {
+      "name": "Product Detail Page",
+      "details": "Sticky product details on right, scrolling image gallery on left. Accordions for Details, Styling Tips, Reviews. COD Available badge. 'Buy Now' main CTA, 'Add to Cart' secondary CTA."
+    }
+  ],
+  "media_assets": {
+    "logo_concept": "Text 'Aavya' in cursive (Italianno font) with a gold (#D4AF37) Lotus icon (use lucide-react <Flower /> or <Sprout /> or custom SVG) placed above or beside.",
+    "images": {
+      "hero_bridal": "https://images.unsplash.com/photo-1756483560049-e7b2208f99a0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1OTN8MHwxfHNlYXJjaHwyfHxpbmRpYW4lMjBicmlkYWwlMjBqZXdlbHJ5JTIwbW9kZWx8ZW58MHx8fHwxNzgxNzY2NjE4fDA&ixlib=rb-4.1.0&q=85",
+      "hero_alternate": "https://images.unsplash.com/photo-1570212773364-e30cd076539e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1OTN8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjBicmlkYWwlMjBqZXdlbHJ5JTIwbW9kZWx8ZW58MHx8fHwxNzgxNzY2NjE4fDA&ixlib=rb-4.1.0&q=85",
+      "category_necklaces": "https://images.pexels.com/photos/19647000/pexels-photo-19647000.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "category_earrings": "https://images.pexels.com/photos/20074769/pexels-photo-20074769.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "category_oxidised": "https://images.pexels.com/photos/15650527/pexels-photo-15650527.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "instagram_lifestyle_1": "https://images.unsplash.com/photo-1532039956299-1614b86a6d2f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzV8MHwxfHNlYXJjaHwzfHxsaWZlc3R5bGUlMjBmYXNoaW9uJTIwbW9kZWwlMjBqZXdlbHJ5fGVufDB8fHx8MTc4MTc2NjY0M3ww&ixlib=rb-4.1.0&q=85",
+      "instagram_lifestyle_2": "https://images.pexels.com/photos/17557255/pexels-photo-17557255.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "instagram_lifestyle_3": "https://images.unsplash.com/photo-1613966561243-c6959a886009?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzV8MHwxfHNlYXJjaHwxfHxsaWZlc3R5bGUlMjBmYXNoaW9uJTIwbW9kZWwlMjBqZXdlbHJ5fGVufDB8fHx8MTc4MTc2NjY0M3ww&ixlib=rb-4.1.0&q=85",
+      "instagram_lifestyle_4": "https://images.pexels.com/photos/8050079/pexels-photo-8050079.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "product_placeholder_1": "https://images.pexels.com/photos/35921022/pexels-photo-35921022.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "product_placeholder_2": "https://images.unsplash.com/photo-1626784214765-754de4c5a77b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w8NjY2NzN8MHwxfHNlYXJjaHwzfHxzaWx2ZXIlMjBveGlkaXNlZCUyMGpld2Vscnl8ZW58MHx8fHwxNzgxNzY2NjE4fDA&ixlib=rb-4.1.0&q=85"
+    }
+  },
+  "technical_instructions_to_main_agent": [
+    "Install and use 'lucide-react' for all icons.",
+    "Install and use 'framer-motion' for scroll and hover animations.",
+    "Install fonts via Google Fonts in index.css: @import url('https://fonts.googleapis.com/css2?family=Italianno&family=Outfit:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap');",
+    "Configure Tailwind spacing scale and colors per these guidelines.",
+    "Ensure all interactive elements and key informational elements have a 'data-testid' attribute using kebab-case role-based names (e.g., data-testid='shop-now-button').",
+    "For the E-commerce flow, implement local state or React Context for Cart, Wishlist, and Checkout.",
+    "Avoid Shadcn 'Card' wrappers for products; use plain HTML/Tailwind divs for more creative freedom.",
+    "Floating WhatsApp button must have high z-index and fixed positioning.",
+    "Use strict semantic HTML. Product cards should use <article>, sections should use <section>."
+  ]
+}
